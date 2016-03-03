@@ -18,6 +18,8 @@
 
 **客户端API**
 
+定义一套新的通信协议，实现客户端与服务端的全双式通信。
+
 ```javascript
 var connection = new WebSocket('ws://localhost:8080');
 
@@ -73,8 +75,6 @@ Sec-WebSocket-Accept:/ZVAP3n6XuqDUoDp416PYUO+ZJc=
 Upgrade:websocket
 ```
 
-
-
 **服务端实现**
 
  - Node (Socket.IO, WebSocket-Node, ws)
@@ -98,5 +98,60 @@ Upgrade:websocket
  - 代理服务器会有不支持websocket的情况
  - 无超时处理
 
- **CANIUSE**
+**实例**
 
+简易聊天室，贴上主要核心代码即可
+
+### server-sent event
+
+基于现有的`http`协议，无须额外的协议及后端实现，通过服务器端事件通知实时将数据更新到客户端。
+
+**javascript API**
+
+```javascript
+var source = new EventSource('http://localhost:8080');
+
+source.addEventListener('message', function(e) {
+  console.log(e.data);
+}, false);
+
+source.addEventListener('open', function(e) {
+  // Connection was opened.
+}, false);
+
+source.addEventListener('error', function(e) {
+  if (e.readyState == EventSource.CLOSED) {
+    // Connection was closed.
+  }
+}, false);
+```
+
+**响应头**
+
+```
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+```
+
+**响应数据格式**
+
+```
+id: 123\n
+retry: 10000\n
+event: userlogon\n
+data: {"username": "John123"}\n\n
+```
+
+**优点**
+
+ - 基于现有http协议，实现简单
+ - 断开后自动重联，并可设置重联超时
+ - 派发任意事件
+ - 跨域并有相应的安全过滤
+ - 无须担心中间层代理问题
+
+ **缺点**
+
+  - 只能单向通信，服务器端向客户端推送事件
+  - IE下目前所有不支持EventSource
