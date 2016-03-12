@@ -15,7 +15,7 @@
 通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。当发现新数据时，立即将其输出给浏览器并断开连接，浏览器在收到数据后，再次发起请求以进入下一个周期。
 
 普通ajax轮询与基于AJAX的长轮询原理对比
-![ajax](/path/to/img.jpg)
+![ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/ajax.jpg)
 
 ### websocket
 
