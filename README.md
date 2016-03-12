@@ -17,6 +17,16 @@
 普通ajax轮询与基于AJAX的长轮询原理对比
 ![ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/ajax.jpg)
 
+
+
+
+
+
+
+
+
+
+
 ### websocket
 
 WebSocket是HTML5出的东西（协议），也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系，只是为了兼容现有浏览器的握手规范而已，也就是说它是HTTP协议上的一种补充可以通过这样一张图理解
@@ -131,6 +141,8 @@ Upgrade:websocket
 
 非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
 
+![ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/ajax.jpg)
+
 **EventSource API**
 
 ```javascript
@@ -196,4 +208,4 @@ data: {"username": "John123"}\n\n
   - 事件流协议只能传输UTF-8数据，不支持二进制流。
   - IE下目前所有不支持EventSource
 
-**TIP** 如果代理服务器或中间设备不支持SSE，导致连接失效，正式环境中使用可能通过TLS发送SSE事件流。
+`Tip` 如果代理服务器或中间设备不支持SSE，导致连接失效，正式环境中使用可能通过TLS发送SSE事件流。
