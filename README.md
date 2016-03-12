@@ -141,7 +141,7 @@ Upgrade:websocket
 
 非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
 
-![ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/ajax.jpg)
+![ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/sse.png?raw=true)
 
 **EventSource API**
 
@@ -208,4 +208,4 @@ data: {"username": "John123"}\n\n
   - 事件流协议只能传输UTF-8数据，不支持二进制流。
   - IE下目前所有不支持EventSource
 
-`Tip` 如果代理服务器或中间设备不支持SSE，导致连接失效，正式环境中使用可能通过TLS发送SSE事件流。
+`Tip` 如果代理服务器或中间设备不支持SSE，会导致连接失效，正式环境中使用通过TLS协议发送SSE事件流。
