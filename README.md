@@ -19,12 +19,6 @@
 
 ### websocket
 
-著作权归作者所有。
-商业转载请联系作者获得授权，非商业转载请注明出处。
-作者：Ovear
-链接：https://www.zhihu.com/question/20215561/answer/40316953
-来源：知乎
-
 WebSocket是HTML5出的东西（协议），也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系，只是为了兼容现有浏览器的握手规范而已，也就是说它是HTTP协议上的一种补充可以通过这样一张图理解
 
 单独制定的协议，与`http`不一样，能够实现持久连接，与长链接不一样
@@ -115,11 +109,15 @@ Upgrade:websocket
 
 简易聊天室，贴上主要核心代码即可
 
-### server-sent event
+### Server-sent-events(SSE)
 
-基于现有的`http`协议，无须额外的协议及后端实现，通过服务器端事件通知实时将数据更新到客户端，客户端`API`与`websocket`非常类似，非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
+Server-sent-events(SSE)让服务端可以向客户端流式发送文本消息，在实现上，客户端浏览器中增加`EventSource`对象，使其能通过事件的方式接收到服务器推送的通知，在服务端请求响应时增加新`数据流`数据格式。
 
-**javascript API**
+实现原理还是基于现有的`http`协议，无须额外的协议及后端实现，通过一个长`http`连接，连接管理及消息解析浏览器已帮我们处理好，开发时只需要关注业务逻辑即可。
+
+非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
+
+**EventSource API**
 
 ```javascript
 var source = new EventSource('http://localhost:8080');
@@ -137,7 +135,18 @@ source.addEventListener('error', function(e) {
     // Connection was closed.
   }
 }, false);
+
+source.addEventListener('userlogin', function(e) {
+  console.log(e.data);
+}, false);
 ```
+
+客户端API使用非常简单，浏览器在支持的情况下会自动处理一切，包括连接管理接收并解析数据到最后触发DOM事件，开发时只需要关注业务逻辑，`EventSource`接口还能自动重新连接并跟踪最近接收的消息，还可以向服务器发送上一次接收到消息的ID，以便服务器重传丢失的消息并恢复流。
+
+**Event Stream协议**
+
+SSE事件流以流式HTTP响应请求，客户端发起普通的`HTTP`请求，服务器以自定义的`text/event-stream`
+内容类型响应，然后通过事件传递数据。
 
 **响应头**
 
@@ -152,9 +161,13 @@ Connection: keep-alive
 ```
 id: 123\n
 retry: 10000\n
-event: userlogon\n
+event: userlogin\n
 data: {"username": "John123"}\n\n
 ```
+
+客户端通过EventSource接口发起连接，服务器以`text/event-stream`内容类型响应，可设置中断后重连时间间隔`retry`，数据通过字符串的方式赋值给`data`字段，也可以指定消息类型给`event`字段。在客户端`EventSource`接口通过检查换行分隔符来解析到来的数据流，从`data`字段中获取数据，检查可选的`ID`和类型，最后分配事件告知应用，如果存在某个类型，触发自定义的事件回调，否则就会调用通用的`onmessage`回调。
+
+
 
 **优点**
 
