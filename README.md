@@ -27,15 +27,17 @@
 
 
 
-### websocket
+### WebSocket
 
-WebSocket是HTML5出的东西（协议），也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系，只是为了兼容现有浏览器的握手规范而已，也就是说它是HTTP协议上的一种补充可以通过这样一张图理解
+`WebSocket`可以实现与客户端与服务器双向，基于消息的文本或二进制数据通信，主要包括两个部分，客户端`WebSocket API`及`WebSocket`协议。
 
-单独制定的协议，与`http`不一样，能够实现持久连接，与长链接不一样
+WebSocket是HTML5出的东西（协议），也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系，只是为了兼容现有浏览器的握手规范而已。
 
-**客户端API**
+![ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/websockets.png?raw=true)
 
-定义一套新的通信协议，实现客户端与服务端的全双式通信。
+**WebSocket API**
+
+浏览器提供的`WebSocket API`很简单，使用时无需关心连接管理和消息处理等底层细节，只需要发起连接，绑定相应的事件回调即可。
 
 ```javascript
 var connection = new WebSocket('ws://localhost:8080');
@@ -56,8 +58,6 @@ connection.onmessage = function (e) {
 };
 ```
 
-note: `ws://`与`wss://`
-
 ```javascript
 // Sending String
 connection.send('your message');
@@ -75,7 +75,11 @@ var file = document.querySelector('input[type="file"]').files[0];
 connection.send(file);
 ```
 
-**协议**
+`WebSocket`资源URL采用了自定议模式，没有使用`http`是为了在非`http`协议场景下也能使用，`wss`表示使用加密信道通信(TCP + TLS)，支持接收和发送文本和二进制数据。
+
+**WebSocket 协议**
+
+`WebSocket`通信协议包含两个部分，一是开放性`HTTP`握手连接协商连接参数，二是二进制消息分帧机制（接收消息的文本和二进制数据传输）。它是一个独立完善的协议，也可以在浏览器之外实现。
 
 请求头信息
 ```
