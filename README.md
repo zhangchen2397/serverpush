@@ -30,13 +30,13 @@
 
 ### Server-sent-events(SSE)
 
-`Server-sent-events(SSE)`让服务端可以向客户端流式发送文本消息，在实现上，客户端浏览器中增加`EventSource`对象，使其能通过事件的方式接收到服务器推送的消息，在服务端，使用长连接的事件流协议，即请求响应时增加新`数据流`数据格式。
+`Server-sent-events(SSE)`让服务端可以向客户端流式发送文本消息，在实现上，客户端浏览器中增加`EventSource`对象，使其能通过事件的方式接收到服务器推送的消息，在服务端，使用长连接的事件流协议，即请求响应时增加新数据流数据格式。
 
 非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
 
 ![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/sse.png?raw=true)
 
-**EventSource API**
+#### EventSource API
 
 ```javascript
 var source = new EventSource('http://localhost:8080');
@@ -62,7 +62,7 @@ source.addEventListener('userlogin', function(e) {
 
 客户端API使用非常简单，浏览器在支持的情况下会自动处理一切，包括连接管理接收并解析数据到最后触发DOM事件，开发时只需要关注业务逻辑，`EventSource`接口还能自动重新连接并跟踪最近接收的消息，还可以向服务器发送上一次接收到消息的ID，以便服务器重传丢失的消息并恢复流。
 
-**Event Stream协议**
+#### Event Stream协议
 
 SSE事件流以流式HTTP响应请求，客户端发起普通的`HTTP`请求，服务器以自定义的`text/event-stream`
 内容类型响应，然后通过事件传递数据。
@@ -210,5 +210,6 @@ Upgrade:websocket
  - 客户端并不是所有浏览器都支持
  - 代理服务器会有不支持websocket的情况
  - 无超时处理
+ - 更耗电及占用资源
 
-`TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使用安全的`wss`加密通道。
+`TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使借助`TLS`，通过建立一条端到端的加密信道，可以让`WebSocket`通信绕过所有中间代理。
