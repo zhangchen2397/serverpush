@@ -27,6 +27,89 @@
 
 
 
+
+### Server-sent-events(SSE)
+
+`Server-sent-events(SSE)`让服务端可以向客户端流式发送文本消息，在实现上，客户端浏览器中增加`EventSource`对象，使其能通过事件的方式接收到服务器推送的消息，在服务端，使用长连接的事件流协议，即请求响应时增加新`数据流`数据格式。
+
+非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
+
+![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/sse.png?raw=true)
+
+**EventSource API**
+
+```javascript
+var source = new EventSource('http://localhost:8080');
+
+source.addEventListener('message', function(e) {
+  console.log(e.data);
+}, false);
+
+source.addEventListener('open', function(e) {
+  // Connection was opened.
+}, false);
+
+source.addEventListener('error', function(e) {
+  if (e.readyState == EventSource.CLOSED) {
+    // Connection was closed.
+  }
+}, false);
+
+source.addEventListener('userlogin', function(e) {
+  console.log(e.data);
+}, false);
+```
+
+客户端API使用非常简单，浏览器在支持的情况下会自动处理一切，包括连接管理接收并解析数据到最后触发DOM事件，开发时只需要关注业务逻辑，`EventSource`接口还能自动重新连接并跟踪最近接收的消息，还可以向服务器发送上一次接收到消息的ID，以便服务器重传丢失的消息并恢复流。
+
+**Event Stream协议**
+
+SSE事件流以流式HTTP响应请求，客户端发起普通的`HTTP`请求，服务器以自定义的`text/event-stream`
+内容类型响应，然后通过事件传递数据。
+
+**响应头**
+
+```
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+```
+
+**响应数据格式**
+
+```
+id: 123\n
+retry: 10000\n
+event: userlogin\n
+data: {"username": "John123"}\n\n
+```
+
+客户端通过EventSource接口发起连接，服务器以`text/event-stream`内容类型响应，可设置中断后重连时间间隔`retry`，数据通过字符串的方式赋值给`data`字段，也可以指定消息类型给`event`字段。在客户端`EventSource`接口通过检查换行分隔符来解析到来的数据流，从`data`字段中获取数据，检查可选的`ID`和类型，最后分配事件告知应用，如果存在某个类型，触发自定义的事件回调，否则就会调用通用的`onmessage`回调。
+
+为了在连接中断时恢复中断过程中丢失的消息，服务器在响应时可以给每条消息关联任意的`ID`字符串，浏览器会自动记录最后一次接收到消息`ID`，并在发送重新连接请求时自动在`HTTP`请求头中追加`Last-Event-ID`，这样就可以标识中断过程中丢失的消息并重新发送给客户端。
+
+**优点**
+
+ - 基于现有http协议，实现简单
+ - 断开后自动重联，并可设置重联超时
+ - 派发任意事件
+ - 跨域并有相应的安全过滤
+
+**缺点**
+
+  - 只能单向通信，服务器端向客户端推送事件
+  - 事件流协议只能传输UTF-8数据，不支持二进制流。
+  - IE下目前所有不支持EventSource
+
+`Tip` 如果代理服务器或中间设备不支持SSE，会导致连接失效，正式环境中使用通过TLS协议发送SSE事件流。
+
+
+
+
+
+
+
+
 ### WebSocket
 
 `WebSocket`可以实现与客户端与服务器双向，基于消息的文本或二进制数据通信，主要包括两个部分，客户端`WebSocket API`及`WebSocket`协议。
@@ -116,8 +199,6 @@ Upgrade:websocket
 
 适合于对数据的实时性要求比较强的场景，如通信、股票、Feed、直播、共享桌面，特别适合于客户端与服务频繁交互的情况下，如实时共享、多人协作等平台。
 
-`TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使用安全的`wss`加密通道。
-
 **优点**
  
  - 真正的全双工通信
@@ -130,97 +211,4 @@ Upgrade:websocket
  - 代理服务器会有不支持websocket的情况
  - 无超时处理
 
-**实例**
-
-简易聊天室，贴上主要核心代码即可
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Server-sent-events(SSE)
-
-`Server-sent-events(SSE)`让服务端可以向客户端流式发送文本消息，在实现上，客户端浏览器中增加`EventSource`对象，使其能通过事件的方式接收到服务器推送的消息，在服务端，使用长连接的事件流协议，即请求响应时增加新`数据流`数据格式。
-
-非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
-
-![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/sse.png?raw=true)
-
-**EventSource API**
-
-```javascript
-var source = new EventSource('http://localhost:8080');
-
-source.addEventListener('message', function(e) {
-  console.log(e.data);
-}, false);
-
-source.addEventListener('open', function(e) {
-  // Connection was opened.
-}, false);
-
-source.addEventListener('error', function(e) {
-  if (e.readyState == EventSource.CLOSED) {
-    // Connection was closed.
-  }
-}, false);
-
-source.addEventListener('userlogin', function(e) {
-  console.log(e.data);
-}, false);
-```
-
-客户端API使用非常简单，浏览器在支持的情况下会自动处理一切，包括连接管理接收并解析数据到最后触发DOM事件，开发时只需要关注业务逻辑，`EventSource`接口还能自动重新连接并跟踪最近接收的消息，还可以向服务器发送上一次接收到消息的ID，以便服务器重传丢失的消息并恢复流。
-
-**Event Stream协议**
-
-SSE事件流以流式HTTP响应请求，客户端发起普通的`HTTP`请求，服务器以自定义的`text/event-stream`
-内容类型响应，然后通过事件传递数据。
-
-**响应头**
-
-```
-Content-Type: text/event-stream
-Cache-Control: no-cache
-Connection: keep-alive
-```
-
-**响应数据格式**
-
-```
-id: 123\n
-retry: 10000\n
-event: userlogin\n
-data: {"username": "John123"}\n\n
-```
-
-客户端通过EventSource接口发起连接，服务器以`text/event-stream`内容类型响应，可设置中断后重连时间间隔`retry`，数据通过字符串的方式赋值给`data`字段，也可以指定消息类型给`event`字段。在客户端`EventSource`接口通过检查换行分隔符来解析到来的数据流，从`data`字段中获取数据，检查可选的`ID`和类型，最后分配事件告知应用，如果存在某个类型，触发自定义的事件回调，否则就会调用通用的`onmessage`回调。
-
-为了在连接中断时恢复中断过程中丢失的消息，服务器在响应时可以给每条消息关联任意的`ID`字符串，浏览器会自动记录最后一次接收到消息`ID`，并在发送重新连接请求时自动在`HTTP`请求头中追加`Last-Event-ID`，这样就可以标识中断过程中丢失的消息并重新发送给客户端。
-
-**优点**
-
- - 基于现有http协议，实现简单
- - 断开后自动重联，并可设置重联超时
- - 派发任意事件
- - 跨域并有相应的安全过滤
-
-**缺点**
-
-  - 只能单向通信，服务器端向客户端推送事件
-  - 事件流协议只能传输UTF-8数据，不支持二进制流。
-  - IE下目前所有不支持EventSource
-
-`Tip` 如果代理服务器或中间设备不支持SSE，会导致连接失效，正式环境中使用通过TLS协议发送SSE事件流。
+`TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使用安全的`wss`加密通道。
