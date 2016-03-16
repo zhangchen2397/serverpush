@@ -213,3 +213,8 @@ Upgrade:websocket
  - 更耗电及占用资源
 
 `TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使借助`TLS`，通过建立一条端到端的加密信道，可以让`WebSocket`通信绕过所有中间代理。
+
+
+![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/websockets.png?raw=true)
+
+
