@@ -1,21 +1,21 @@
 # 服务器端推送技术简介
 
-## 技术实现方案
- - ajax轮询
- - commet配合ajax长轮询
+### 技术实现方案
+ - Ajax轮询
+ - Ajax长轮询
  - websocket
- - server-sent event
+ - server-sent-events
 
-### ajax轮询
-实践简单，基于`http`协议，`setInterval`定时发送请求，但会造成数据同步不及时及无效的请求，增加后端处理压力。
+### Ajax轮询
+实践简单，利用`XHR`，通过`setInterval`定时发送请求，但会造成数据同步不及时及无效的请求，增加后端处理压力。
 
-### 基于AJAX的长轮询（long-polling）方式
-在ajax轮询基础上做的一些改进，在没有更新的时候不再返回空响应，而且把连接保持到有更新的时候，客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。
+### Ajax长轮询
+在`Ajax`轮询基础上做的一些改进，在没有更新的时候不再返回空响应，而且把连接保持到有更新的时候，客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求，通常把这种实现也叫做`comet`。
 
 通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。当发现新数据时，立即将其输出给浏览器并断开连接，浏览器在收到数据后，再次发起请求以进入下一个周期。
 
-普通ajax轮询与基于AJAX的长轮询原理对比
-![ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/ajax.jpg)
+普通`Ajax`轮询与基于AJAX的长轮询原理对比：
+![Ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/Ajax.jpg)
 
 
 
@@ -33,7 +33,7 @@
 
 WebSocket是HTML5出的东西（协议），也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系，只是为了兼容现有浏览器的握手规范而已。
 
-![ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/websockets.png?raw=true)
+![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/websockets.png?raw=true)
 
 ####WebSocket API
 
@@ -106,7 +106,7 @@ Sec-WebSocket-Accept:/ZVAP3n6XuqDUoDp416PYUO+ZJc=
 Upgrade:websocket
 ```
 
-最后，前述握手完成后，如果握手成功，该连接就可以用作双向通信信道交换`WebSocket`消息。从此以后，客户端与服务器之间不会再发生HTTP 通信，一切由`WebSocket` 协议接管。
+最后，前述握手完成后，如果握手成功，该连接就可以用作双向通信信道交换`WebSocket`消息。到此，客户端与服务器之间不会再发生`HTTP`通信，一切由`WebSocket` 协议接管。
 
 **服务端实现**
 
@@ -159,7 +159,7 @@ Upgrade:websocket
 
 非常适应于后端数据更新频繁且对实时性要求较高而又不需要客户端向服务端通信的场景下。
 
-![ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/sse.png?raw=true)
+![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/sse.png?raw=true)
 
 **EventSource API**
 
