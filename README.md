@@ -35,7 +35,7 @@ WebSocket是HTML5出的东西（协议），也就是说HTTP协议没有变化�
 
 ![ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/websockets.png?raw=true)
 
-**WebSocket API**
+####WebSocket API
 
 浏览器提供的`WebSocket API`很简单，使用时无需关心连接管理和消息处理等底层细节，只需要发起连接，绑定相应的事件回调即可。
 
@@ -77,9 +77,18 @@ connection.send(file);
 
 `WebSocket`资源URL采用了自定议模式，没有使用`http`是为了在非`http`协议场景下也能使用，`wss`表示使用加密信道通信(TCP + TLS)，支持接收和发送文本和二进制数据。
 
-**WebSocket 协议**
+####WebSocket 协议
 
 `WebSocket`通信协议包含两个部分，一是开放性`HTTP`握手连接协商连接参数，二是二进制消息分帧机制（接收消息的文本和二进制数据传输）。它是一个独立完善的协议，也可以在浏览器之外实现。
+
+**子协议协商**
+
+
+**HTTP升级协商**
+
+`WebSocket`协议提供了很多强大的特性：基于消息的通信、自定义的二进制分帧层、子协议协商、可选的协议扩展，等等。即在交换数据之前，客户端必须与服务器协商适当的参数以建立连接。
+
+利用`HTTP`完成握手有几个好处。首先，让`WebSockets`与现有`HTTP`基础设施兼容：`WebSocket`服务器可以运行在80和443 端口上，这通常是对客户端唯一开放的端口。其次，让我们可以重用并扩展HTTP的Upgrade流，为其添加自定义的WebSocket首部，以完成协商。
 
 请求头信息
 ```
@@ -91,10 +100,13 @@ Upgrade:websocket
 
 响应头信息
 ```
+HTTP/1.1 101 Switching Protocols
 Connection:Upgrade
 Sec-WebSocket-Accept:/ZVAP3n6XuqDUoDp416PYUO+ZJc=
 Upgrade:websocket
 ```
+
+最后，前述握手完成后，如果握手成功，该连接就可以用作双向通信信道交换`WebSocket`消息。从此以后，客户端与服务器之间不会再发生HTTP 通信，一切由`WebSocket` 协议接管。
 
 **服务端实现**
 
@@ -106,6 +118,8 @@ Upgrade:websocket
 **使用场景**
 
 适合于对数据的实时性要求比较强的场景，如通信、股票、Feed、直播、共享桌面，特别适合于客户端与服务频繁交互的情况下，如实时共享、多人协作等平台。
+
+`TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使用安全的`wss`加密通道。
 
 **优点**
  
