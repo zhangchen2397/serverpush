@@ -9,8 +9,32 @@
 ### Ajax轮询
 实践简单，利用`XHR`，通过`setInterval`定时发送请求，但会造成数据同步不及时及无效的请求，增加后端处理压力。
 
+```javascript
+setInterval(function() {
+    $.ajax({
+        url: 'http://api.3g.qq.com',
+        success: function() {
+            //code from here
+        }
+    });
+}, 3000);
+```
+
+
 ### Ajax长轮询
 在`Ajax`轮询基础上做的一些改进，在没有更新的时候不再返回空响应，而且把连接保持到有更新的时候，客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求，通常把这种实现也叫做`comet`。
+
+```javascript
+function async() {
+    $.ajax({
+        url: 'http://api.3g.qq.com',
+        success: function() {
+            async();
+            //code from here
+        }
+    });
+}
+```
 
 通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。当发现新数据时，立即将其输出给浏览器并断开连接，浏览器在收到数据后，再次发起请求以进入下一个周期。
 
