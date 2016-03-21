@@ -38,7 +38,7 @@ function async() {
 
 通常的做法是，在服务器的程序中加入一个死循环，在循环中监测数据的变动。当发现新数据时，立即将其输出给浏览器并断开连接，浏览器在收到数据后，再次发起请求以进入下一个周期。
 
-普通`Ajax`轮询与基于AJAX的长轮询原理对比：
+普通`Ajax`轮询与基于`Ajax`的长轮询原理对比：
 ![Ajax](https://raw.githubusercontent.com/zhangchen2397/serverpush/master/image/ajax.jpg)
 
 
@@ -88,8 +88,7 @@ source.addEventListener('userlogin', function(e) {
 
 #### Event Stream协议
 
-SSE事件流以流式HTTP响应请求，客户端发起普通的`HTTP`请求，服务器以自定义的`text/event-stream`
-内容类型响应，然后通过事件传递数据。
+SSE事件流以流式HTTP响应请求，客户端发起普通的`HTTP`请求，服务器以自定义的`text/event-stream`内容类型响应，然后通过事件传递数据。
 
 **响应头**
 
