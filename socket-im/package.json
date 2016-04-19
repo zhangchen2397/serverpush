@@ -1,0 +1,12 @@
+{
+  "name": "socket-im",
+  "version": "0.0.1",
+  "description": "simulate wechat used by websocket",
+  "main": "index.js",
+  "author": "samczhang",
+  "private": true,
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  }
+}

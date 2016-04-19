@@ -1,0 +1,188 @@
+body {
+    background-color: #EBEBEB;
+}
+
+.login {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #282828;
+}
+
+.login .con {
+    height: 150px;
+    margin-top: -150px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    color: #fff;
+}
+
+.login .con .rtx {
+    padding-bottom: 20px;
+    font-size: 25px;
+}
+
+.login .con .rtx label {
+    padding-right: 10px;
+    font-size: 23px;
+}
+
+.login .con .rtx input {
+    background-color: transparent;
+    color: #FFF;
+    border: none;
+    border-bottom: 2px solid #fff;
+    outline: none;
+    font-size: 25px;
+    width: 200px;
+    text-align: center;
+    position: relative;
+    top: -3px;
+    padding: 3px 0;
+}
+
+.login .con .enter {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 2px solid #FFFFFF;
+    width: 215px;
+    text-align: center;
+    display: inline-block;
+}
+
+.chat {
+    
+}
+
+header {
+    position: fixed;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 100%;
+    background-color: #313035;
+    color: #FFFFFF;
+    z-index: 2;
+}
+
+.chat-list {
+    padding: 47px 0 60px;
+}
+
+.chat-list ul {
+    padding: 0 8px;
+}
+
+.chat-list ul li {
+    padding: 7px 0;
+}
+
+.chat-list ul li.log {
+    text-align: center;
+}
+
+.chat-list ul li.log p {
+    display: inline-block;
+    text-align: center;
+    font-size: 12px;
+    background-color: #dcdcdc;
+    padding: 1px 18px;
+    color: #fff;
+    border-radius: 2px;
+}
+
+.chat-list ul li.other .avatar {
+    float: left;
+    margin-right: 10px;
+}
+
+.chat-list ul li.msg .avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.chat-list ul li.msg .info {
+    overflow: hidden;
+}
+
+.chat-list .nickname {
+    position: relative;
+    top: -5px;
+    color: #9A9494;
+}
+
+.chat-list ul li.other .info .msg {
+    max-width: 70%;
+    background-color: #FFFFFF;
+    padding: 8px 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+
+
+
+
+.chat-list ul li.me {
+    text-align: right;
+}
+
+.chat-list ul li.me .avatar {
+    float: right;
+    margin-left: 10px;
+}
+
+.chat-list ul li.me .info .msg {
+    float: right;
+    text-align: left;
+    max-width: 70%;
+    background-color: #A2E65B;
+    padding: 8px 10px;
+    border-radius: 3px;
+}
+
+
+
+.send-msg {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    border-top: 1px solid #DDDDDF;
+    background-color: #EAEDF2;
+    padding: 8px;
+}
+
+.send-msg p {
+    display: flex;
+}
+
+.send-msg input {
+    background-color: #FCFCFE;
+    border: 1px solid #D7D8DA;
+    border-radius: 2px;
+    height: 30px;
+    line-height: 30px;
+    flex: 9;
+    padding: 0 3px;
+    margin-right: 8px;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.send-msg button {
+    float: right;
+    margin-right: 16px;
+    flex: 1;
+    height: 30px;
+    line-height: 30px;
+    color: #FFFFFF;
+    font-size: 14px;
+    background-color: #19A149;
+    border-radius: 3px;
+    border: none;
+}
