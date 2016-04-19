@@ -239,11 +239,12 @@ Upgrade:websocket
 
 **socket-im demo**
 
-![demo](https://github.com/zhangchen2397/serverpush/blob/master/image/iso.png?raw=true)
+![demo](https://github.com/zhangchen2397/serverpush/blob/master/image/demo.png?raw=true)
 
-采用`nodejs` `socket.io`的一个`im`应用简单示例，具体代码见附件`socket-im-demo`。
+采用`nodejs` `socket.io`的一个`im`应用简单示例，具体代码见附件`socket-im-demo` 或 [github]: https://github.com/zhangchen2397/serverpush.git
 
 ```
+npm install
 node index.js
 http://localhost:8110
 ```
