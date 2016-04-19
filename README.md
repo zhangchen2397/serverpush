@@ -237,7 +237,21 @@ Upgrade:websocket
 
 `TIP` 代理、很多现有的`HTTP`中间设备可能不理解新的`WebSocket`协议，而这可能导致各种问题，使用时需要注意，可以使借助`TLS`，通过建立一条端到端的加密信道，可以让`WebSocket`通信绕过所有中间代理。
 
+**socket-im demo**
+
+![demo](https://github.com/zhangchen2397/serverpush/blob/master/image/iso.png?raw=true)
+
+采用`nodejs` `socket.io`的一个`im`应用简单示例，具体代码见附件`socket-im-demo`。
+
+```
+node index.js
+http://localhost:8110
+```
+
+最后附上各种实现方法使用的协议图，比较直观。
 
 ![Ajax](https://github.com/zhangchen2397/serverpush/blob/master/image/iso.png?raw=true)
+
+P.S. 部分资源图片及内容参考《web性能权威指南》一书。
 
 
