@@ -5,6 +5,7 @@
 
     var loginPage = $('#login');
     var chatPage = $('#chat');
+    var name = "zhangchen";
 
     var usernameIpt = loginPage.find('input');
     var enterChatPageBtn = loginPage.find('.enter');
