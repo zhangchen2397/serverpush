@@ -5,7 +5,6 @@
  - Ajax长轮询
  - websocket
  - server-sent-events
- - show change
 
 ### Ajax轮询
 实践简单，利用`XHR`，通过`setInterval`定时发送请求，但会造成数据同步不及时及无效的请求，增加后端处理压力。
