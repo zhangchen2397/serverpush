@@ -4,13 +4,15 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 8110;
 
+server.listen(port, function() {
+    console.log('Server listening at port %d', port);
+});
+
 app.use(express.static(__dirname + '/public'));
 
 var avatarArr = ['samczhang', 'bairedzhang', 'elainezhan', 'gavinning', 'haixialiu', 'nazhao', 'rocksun', 'thornwang'];
 
 var numUsers = 0;
-
-console.log('zhangchen');
 
 io.on('connection', function(socket) {
     var addedUser = false;

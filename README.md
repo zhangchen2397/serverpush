@@ -17,10 +17,6 @@ setInterval(function() {
             //code from here
         }
     });
-
-    function add() {
-      console.log('macbook pro');
-    }
 }, 3000);
 ```
 
